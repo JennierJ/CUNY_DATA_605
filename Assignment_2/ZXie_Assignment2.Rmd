@@ -1,0 +1,77 @@
+---
+title: "Data_605_Assignment_2"
+author: "Jenny"
+date: "February 10, 2018"
+output:
+  html_document: default
+  pdf_document: default
+  word_document: default
+---
+
+
+#### Problem Set 1
+
+$$\mathbf{A} = \left[\begin{array}
+{}
+a & b\\
+c & d\\
+\end{array}\right]
+$$
+$$\mathbf{A^T} = \left[\begin{array}
+{}
+a & c\\
+b & d\\
+\end{array}\right]
+$$
+$$\mathbf{A x A^T} = \left[\begin{array}
+{}
+a^2+ b^2 & ac+bd\\
+ac+bd & c^2+cd\\
+\end{array}\right]
+$$
+$$\mathbf{A^T x A} = \left[\begin{array}
+{}
+a^2+ b^2 & ab+cd\\
+ab+cd & b^2+d^2\\
+\end{array}\right]
+$$
+$Therefore,$
+$$A \times A^T \neq A^T \times A $$
+
+```{r}
+A <- matrix(runif(2*2), ncol = 2)
+identical(A* t(A), t(A) * A)
+```
+
+#### Problem Set 2
+
+install.packages('matrixcalc')
+
+
+```{r, include=TRUE}
+
+library(matrixcalc)
+# LU Decomposition needs to be square matrix
+
+LU <- function(A)
+{
+  if (is.square.matrix(A)){
+    luA <- lu.decomposition(A)
+    L <- luA$L
+    U <- luA$U
+    print(L)
+    print(U)
+    print(L %*% U)
+    } else {
+      print("THE GIVEN MATRIX HAS TO BE A SQUARE MATRIX")
+    }
+}
+# Test 1
+A <- matrix(c(1,2,2,1), nrow = 4)
+LU(A)
+
+# Test 2
+B <- matrix(c(1,2,2,1), nrow = 2)
+LU(B)
+```
+
