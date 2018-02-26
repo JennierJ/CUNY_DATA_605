@@ -1,0 +1,84 @@
+---
+title: "ZXie_Assignment4"
+author: "Jenny"
+date: "February 25, 2018"
+output: html_document
+---
+
+
+
+$$\mathbf{A} = \left[\begin{array}
+{}
+1 & 2 & 3\\
+-1 & 0 & 4\\
+\end{array}\right]
+$$
+
+```{r setup}
+# Problem Set 1
+A <- matrix(c(1, -1, 2, 0, 3, 4), nrow = 2, ncol = 3)
+A
+
+# X = A * AT
+X <- A %*% t(A)
+X
+
+# Y = AT * A
+Y <- t(A) %*% A
+Y
+
+# Compute eigenvalues and eigenvectors of X 
+X_eigen <- eigen(X)
+
+X_values <- X_eigen$values
+X_values
+
+X_vector <- X_eigen$vectors
+X_vector
+
+# Compute eigenvalues and eigenvectors of Y
+Y_eigen <- eigen(Y)
+
+Y_values <- Y_eigen$values
+Y_values
+
+Y_vector <- Y_eigen$vectors
+Y_vector
+
+# Compute left-singular, singular values, and right-singular vectors of A using svd command
+svd_A <- svd(A)
+
+left_singular <- svd_A$u
+left_singular
+
+singular_values <- svd_A$d
+singular_values
+
+right_singular <- svd_A$v
+right_singular
+
+# Compare the eigenvector of X with left_singular 
+X_vector
+left_singular
+
+round(abs(X_vector)) == round(abs(left_singular))
+
+# Compare the eigenvector of Y with right_singular
+Y_vector
+right_singular
+
+
+#Problem Set 2
+# The input matrix has to be square
+myinverse <- function(B){
+  n <- nrow(B)
+  C <- matrix(nrow = n, ncol = n)
+  for (i in 1:n){
+    for (j in 1:n){
+      C[i, j] <- det(B[-i,-j])*(-1)^(i+j)
+    }
+  }
+  inverse_B <- t(C)/det(B)
+  return(inverse_B)
+}
+```
