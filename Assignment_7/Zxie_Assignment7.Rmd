@@ -1,0 +1,90 @@
+---
+title: "Data605_HW6"
+author: "Jenny"
+date: "March 18, 2018"
+output: html_document
+---
+
+##### 1. Let X1, X2, . . . , Xn be n mutually independent random variables, each of which is uniformly distributed on the integers from 1 to k. Let Y denote the minimum of the Xi's. Find the distribution of Y .
+
+```{r setup, include=TRUE}
+k <- 30
+Y <- list()
+i <- 1
+
+for(i in 1:100) {
+  x <- sample(k, 1, replace = TRUE)
+  Y[length(Y) + 1] <- list(min(x))
+  i <- i + 1
+}
+
+hist(as.numeric(Y))
+```
+##### When the sample size is 100, the distribution of Y is showing in the graph, which does not show much pattern of any distribution. However, when the size of number is increased from 100 to 10000. Let's see.
+```{r }
+k <- 30
+Y <- list()
+i <- 1
+
+for(i in 1:100000) {
+  x <- sample(k, 1, replace = TRUE)
+  Y[length(Y) + 1] <- list(min(x))
+  i <- i + 1
+}
+
+hist(as.numeric(Y))
+```
+##### The distribution is discrete uniform distribution too.
+
+##### Your organization owns a copier (future lawyers, etc.) or MRI (future doctors). This machine has a manufacturer's expected lifetime of 10 years. This means that we expect one failure every ten years. (Include the probability statements and R Code for each part.).
+##### a. Geometric Distribution
+
+$$\ Expected = 10$$
+
+$$\ Prob = \frac{1}{Expected} = 0.1$$
+$$\ Probability  = (1-Prob)^{n-1} Prob$$
+
+```{r }
+E <- 10
+Prob <- 1/E
+Prob_fail_8 <- (1- Prob)^(8) * Prob
+Prob_fail_8
+#The probability that the machine will fail after 8 years is 0.04304672.
+
+# Expected values is 10 and standard deviation is 90.
+sd <- (1-Prob)/(Prob^2)
+sd
+```
+
+##### b. Exponential Distribution
+
+$$\ P(X > 8) = e^{-8/10} $$
+```{r }
+
+Prob <- exp(-8/10)
+Prob
+#The probability that the machine will fail after 8 years is 0.449329. The standard deviation is equal to mean, which is 10.
+```
+
+##### c. binomial distribution
+
+```{r}
+
+Prob <- choose(9, 8) * 0.5^8 * (1 - 0.5)^1
+Expected <- 9*0.5
+sd <- sqrt(9 * 0.5 * (1-0.5))
+sd
+#The probability that the machine will fail after 8 years is 0.0175. The expected value is 4.5, and the standard deviation is 1.5
+```
+
+
+##### d. Poisson Distribution
+```{r}
+ppois(8, lambda = 10, lower.tail = FALSE)
+Expected <- 10
+sd <- sqrt(10)
+sd
+#The probability that the machine will fail after 8 years is 0.6672. The expected value is 10, and the standard deviation is 3.16.
+```
+$$\ \lambda= 10$$
+
