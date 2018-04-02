@@ -1,0 +1,54 @@
+---
+title: "Data605_Assignment9"
+author: "Jenny"
+date: "April 1, 2018"
+output: html_document
+---
+
+##### 11 page 363
+
+```{r setupE}
+u = 0
+E = 100
+sd = sqrt((365/4))
+
+# a)
+
+a = 100
+
+ans_a = pnorm( a - 100, mean = u, sd = sd, lower.tail = FALSE)
+print(ans_a)
+
+
+# b) 
+b = 110
+ans_b = pnorm( b - 100, mean = u, sd = sd, lower.tail = FALSE)
+print(ans_b)
+
+# c)
+c = 120
+ans_c = pnorm( c - 100, mean = u, sd = sd, lower.tail = FALSE)
+print(ans_c)
+```
+
+##### Calculate the expected value and variance of the binomial distribution using the moment generating function.
+##### The binomial distribution is 
+$$f(x) = C(n, x)p^x (1-p)^{n-k} $$
+$$ M(t) = \sum_{x=0}^n e^{tx} C(n, x)p^x(1-p)^{n-x}$$
+$$ M(t) = \sum_{x=0}^n (pe^t)x} C(n, x)p^x(1-p)^{n-x}$$
+$$ M(t) = [(1-p) + pe^t]^n $$
+$$ M'(t) = n (pe^t) [(1-p) + pe^t]^{n-1}$$
+$$ M(0) = n (pe^0) [(1 - p) + pe^0]^{n-1}= np$$
+
+
+$$ M''(t) = n(n - 1)(pe^t)^2[(1 - p) + pe^t]^{n - 2} + n(pe^t)[(1 - p) + pe^t]^{n - 1} $$
+$$ ??^2 = M''(0) - [M'(0)]^2 = n(n - 1)p^2 +np - (np)^2 = np(1 - p)$$
+
+##### Calculate the expected value and variance of the exponential distribution using the moment generating function.
+$$ M(t) = E [e^{tx}]
+= \int_{0}^{\infty} e^{tx} \lambda e^{-\lambda x}dx $$
+$$ = \lambda \int_{0}^{\infty} e^{(t- \lambda)x}dx = \frac{\lambda}{t- \lambda}[e^{(t-\lambda)x}]^{\infty}_0 $$
+$$ = \frac {\lambda}{\lambda - t}$$
+
+$$ M(0) = \frac {1}{\lambda} $$
+$$??^2 = M''(0) - [M'(0)]^2 = \frac {1}{\lambda^2}$$
