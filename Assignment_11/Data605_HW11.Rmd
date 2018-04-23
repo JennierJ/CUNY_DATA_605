@@ -1,0 +1,39 @@
+---
+title: "Data605_HW11"
+author: "Jenny"
+date: "April 22, 2018"
+output: html_document
+---
+
+
+
+#### Using the "cars" dataset in R, build a linear model for stopping distance as a function of speed and replicate the analysis of your textbook chapter 3 (visualization, quality evaluation of the model, and residual analysis.)
+
+##### Take a look at dataset
+```{r setup, include=TRUE}
+head(cars)
+```
+##### Visualize the data
+```{r cars}
+plot(cars, xlab = "Speed (mph)", ylab = "Stopping distance (ft)",
+     las = 1, xlim = c(0, 25))
+```
+
+##### The Linear Model Fuction
+```{r }
+attach(cars)
+liner <- lm(dist ~ speed)
+
+liner
+```
+##### Evaluate the quality of the model
+```{r}
+summary(liner)
+```
+##### Resudual Analysis
+```{r analysis}
+plot(fitted(liner), resid(liner))
+qqnorm(resid(liner))
+qqline(resid(liner))
+```
+
