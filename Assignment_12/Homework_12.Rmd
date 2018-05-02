@@ -1,0 +1,68 @@
+---
+title: "Data605_HW12"
+author: "Jenny"
+date: "May 1, 2018"
+output: html_document
+---
+
+```{r }
+who <- read.csv(url("https://raw.githubusercontent.com/JennierJ/CUNY_DATA_605/master/Assignment_12/who.csv"))
+head(who)
+summary(who)
+# Provide a scatterplot of LifeExp~TotExp
+lm <- lm(who$LifeExp ~ who$TotExp)
+
+plot(who$TotExp, who$LifeExp, xlab = "Sum of personal and government expenditures", 
+     ylab = " Average life expectancy for the country in years")
+abline(lm)
+```
+
+
+
+
+```{r }
+lm
+summary(lm)
+# It is a very bad liner regression, which can telled from the plot, and R-square is low at 0.2577.
+```
+```{r }
+# Raise life expectancy and total expenditures
+LifeExp4.6 <- who$LifeExp^4.6
+TotExp0.06 <- who$TotExp^0.06
+lm_exp <- lm(LifeExp4.6 ~ TotExp0.06)
+plot(TotExp0.06, LifeExp4.6, xlab = "Sum of personal and government expenditures^0.06", 
+     ylab = " Average life expectancy for the country in years^4.6")
+abline(lm_exp)
+```
+```{r }
+lm_exp
+summary(lm_exp)
+# The linear regression model fits better, with higher R-square. 
+# And the equation is LifeExp4.6 = -736527909 + 620060216 * TotExp0.06
+```
+
+```{r }
+# Question 3
+forecast <- data.frame(TotExp = c(1.5, 2.5))
+predict(lm, newdata = forecast)
+
+```
+
+```{r }
+# Question 4
+lm4 <- lm(LifeExp ~ PropMD + TotExp + TotExp:PropMD, data = who)
+lm4
+summary(lm4)
+```
+```{r }
+# Question 4
+lm4 <- lm(LifeExp ~ PropMD + TotExp + TotExp, data = who)
+lm4
+summary(lm4)
+```
+
+```{r }
+# Question 5
+newforecast <- data.frame(PropMD = 0.03, TotExp = 14)
+predict(lm4, newforecast)
+```
