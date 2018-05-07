@@ -1,0 +1,16 @@
+---
+title: "Data605_Discussion13"
+author: "Jenny"
+date: "May 2, 2018"
+output: html_document
+---
+##### Exercise 4.3 Problem 3
+###### Find the maximum product of two numbers that have a sum of 100
+```{r}
+x <- runif(1000, 1, 100)
+y <- 100-x
+z <- x * y
+summary(z)
+```
+##### The maximum product is 2500
+
