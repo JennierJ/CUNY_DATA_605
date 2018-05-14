@@ -1,0 +1,28 @@
+---
+title: "Data605_Assignment14"
+author: "Jenny"
+date: "May 13, 2018"
+output: html_document
+---
+
+##### Assignment 14 _ Taylor Series
+##### 1. Taylor Series Expansions
+$$
+f(x) = \frac{1}{(x-1)} about\ x = 0
+\\f(x) = \sum_{n=0}^{\infty}x^n
+$$
+
+##### 2. 
+$$
+f(x) = e^x
+\\ c_{n} = \frac{f^{(n)}(0)}{n!} = \frac{1}{n!}
+\\ e^x = \sum_{n=0}^{\infty}\frac{1}{n!}x^n
+$$
+
+##### 3. 
+$$
+f(x) = ln(1+x) at\ a = 0
+\\ = ln(1+0) + \frac{\frac{d}{dx}(ln(1+x))(0)}{1!} + \frac{\frac{d^2}{dx^2}(ln(1+x))(0)}{2!} + \frac{\frac{d^3}{dx^3}(ln(1+x))(0)}{3!} + ...
+\\ = \sum_{n=0}^{\infty}(-1)^{n+1}\frac{x^n}{n}
+$$
+
