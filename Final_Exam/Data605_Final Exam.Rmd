@@ -1,0 +1,154 @@
+---
+title: "Data605_Final Exam 2018"
+author: "Jenny"
+date: "May 20, 2018"
+output: html_document
+---
+
+
+
+
+
+##### Your final is due by the end of day on 5/20/2018 You should post your solutions to your GitHub account or RPubs. You are also expected to make a short presentation via YouTube and post that recording to the board. This project will show off your ability to understand the elements of the class.
+##### You are to register for Kaggle.com (free) and compete in the House Prices: Advanced Regression Techniques competition. https://www.kaggle.com/c/house-prices-advanced-regression-techniques . I want you to do the following.
+
+###### Read the training dataset from Kaggle 
+
+```{r}
+install.packages("ggplot2", repos='https://mirrors.nics.utk.edu/cran/')
+install.packages("corrplot", , repos='https://mirrors.nics.utk.edu/cran/')
+library(ggplot2)
+library(corrplot)
+df_training <- read.csv("https://raw.githubusercontent.com/JennierJ/CUNY_DATA_605/master/Final_Exam/train.csv")
+head(df_training)
+summary(df_training)
+
+df_test <- read.csv("https://raw.githubusercontent.com/JennierJ/CUNY_DATA_605/master/Final_Exam/test.csv")
+
+```
+##### I pick LotArea as X variable and SalePrice as Y variable.
+```{r, ggplot}
+# To take a look at the distribution of LotArea
+df1 <- subset(df_training, select = c("LotArea", "SalePrice"))
+head(df1)
+ggplot(df1, aes(x = LotArea)) + geom_histogram(binwidth=550, color="purple")
+ggplot(df1, aes(x = SalePrice)) + geom_histogram(binwidth = 1500, color="purple")
+```
+#### Probability. Calculate as a minimum the below probabilities a through c. Assume the small letter "x" is estimated as the 1st quartile of the X variable, and the small letter "y" is estimated as the 1st quartile of the Y variable. Interpret the meaning of all probabilities. In addition, make a table of counts as shown below.
+```{r}
+summary(df1)
+```
+##### a. P(X>x | Y>y)
+```{r}
+# The probability where the LotArea is greater than 7554 given that the SalePrice is greater than the 129975.
+total <- nrow(df1)
+data_p1 <- subset(df1, df1$LotArea > 7554 & df1$SalePrice > 129975)
+p1 <- nrow(data_p1)
+data_p2 <- subset(df1, df1$SalePrice > 129975)
+p2 <- nrow(data_p2)
+prop_1 <- (p1/p2) *100
+prop_1
+```
+##### b. P(X>x, Y>y)
+```{r}
+# The probability where the LotArea is greater than 7554 and the SalePrice is greater than the 129975.
+data_p1 <- subset(df1, df1$LotArea > 7554 & df1$SalePrice > 129975)
+p1 <- nrow(data_p1)
+prop_2 <- (p1/total) *100
+prop_2
+```
+##### c. c. P(X<x | Y>y)
+```{r}
+# The probability where the LotArea is less than 7554 and the SalePrice is greater than the 129975.
+data_p3 <- subset(df1, df1$LotArea < 7554 & df1$SalePrice > 129975)
+p3 <- nrow(data_p3)
+prop_3 <- (p3/p2) *100
+prop_3
+```
+##### Does splitting the training data in this fashion make them independent? Let A be the new variable counting those observations above the 1st quartile for X, and let B be the new variable counting those observations above the 1st quartile for Y. Does P(AB)=P(A)P(B)? Check mathematically, and then evaluate by running a Chi Square test for association.
+```{r}
+A <- subset(df1, df1$LotArea > 7554)
+PA <- (nrow(A)/total)* 100
+PA
+# P(A) = 0.75
+B <- subset(df1, df1$SalePrice > 129975)
+PB <- (nrow(B)/total) * 100
+PB
+# P(B) = 0.75
+
+AB <- subset(df1, df1$LotArea > 7554 & df1$SalePrice > 129975)
+PAB <- (nrow(AB)/total) * 100
+PAB
+# P(AB) = 0.61
+```
+$$
+P(A)P(B)\neq P(AB)
+$$
+##### Variable A and B are not independent and splitting the data does not make them independent.
+
+##### Chi Square Test
+```{r}
+chisq.test(df1)
+```
+
+#### Descriptive and Inferential Statistics
+```{r}
+summary(df1$LotArea)
+ggplot(df1, aes(x = df1$LotArea, y=df1$SalePrice)) + geom_point(size=2, shape = 18, color="blue") +
+  labs(title = "SalePrice vs. LotArea", x = "LotArea", y = "SalePrice")
+
+ggplot(df_training, aes(YearBuilt)) + geom_histogram(color="darkblue", fill="lightblue")
+ggplot(df_training, aes(GrLivArea)) + geom_histogram(color="darkblue", fill="lightblue")
+ggplot(df_training, aes(SalePrice)) + geom_histogram(color="darkblue", fill="lightblue")
+ggplot(df_training, aes(HouseStyle)) + geom_bar(color="darkblue", fill="lightblue")
+ggplot(df_training, aes(BldgType)) + geom_bar(color="darkblue", fill="lightblue")
+ggplot(df_training, aes(MSZoning)) + geom_bar(color="darkblue", fill="lightblue")
+```
+#### Descriptive and Inferential Statistics. Derive a correlation matrix for any THREE quantitative variables in the dataset. I am analyzing the coorelations between LotArea, OverallQual and GrlivArea.
+```{r}
+colnames(df_training)
+df_matrix <- df_training[c("LotArea", "GrLivArea", "SalePrice")]
+cor_matrix <- cor(df_matrix, use="complete.obs", method="kendall")
+corrplot(cor_matrix, method = "circle")
+```
+##### Correlation Test
+```{r}
+cor.test(df_training$LotArea, df_training$SalePrice, conf.level = 0.92)
+cor.test(df_training$GrLivArea, df_training$SalePrice, conf.level = 0.92)
+```
+##### According to the correlation test, the SalePrice vs. GrLivArea has better correlation than SalePrice vs. LotArea.
+
+##### Linear Algebra and Correlation
+```{r}
+pre_matrix <- solve(cor_matrix)
+round(pre_matrix %*% cor_matrix)
+```
+
+
+##### Modeling of 
+###### A couple of variables were selected to build the multi-factor regression model. 
+```{r}
+lr <- lm(SalePrice ~ LotArea + LotFrontage + BldgType +
+           OverallQual + BsmtQual +  GarageArea + GarageYrBlt + 
+           GrLivArea + TotalBsmtSF, data = df_training)
+summary(lr)
+
+# Update my model with backward Elimination Process
+lr1 <- update(lr, . ~ . - GarageYrBlt)
+summary(lr1)
+
+# Residual Analysis
+plot(fitted(lr1), resid(lr1))
+qqnorm(resid(lr1))
+```
+
+##### Test the model
+```{r}
+predicted_data <- predict(lr1, newdata = df_test)
+submission <- data.frame(predicted_data)
+summary(submission)
+submission$predicted_data[is.na(submission$predicted_data)] <- 162729
+write.csv(submission, "KaggleSubmission.csv")
+```
+##### Kaggle User Name: jennier/Jenny Xie
+##### Score: 0.23212
